@@ -1,0 +1,91 @@
+*{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+  position: relative;
+}
+
+@mixin c-align{
+  position: absolute;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+@mixin v-align{
+  position: absolute;
+  top: 0;
+  bottom:0;
+  margin: auto;
+}
+@mixin center{
+  position: absolute;
+  top:0;left:0;right:0;bottom: 0;
+  margin: auto;
+}
+$number:12;
+$l-size:3000px;
+$m-size:1068px;
+$s-size:736px;
+$list:(
+  "l":$l-size,
+  "m":$m-size,
+  "s":$s-size
+);
+.row{
+  position:relative;
+}
+.row::after{
+  content:"";
+  display:block;
+  height:0;
+  line-height:0;
+  clear:both;
+}
+.col{
+  float: left;
+
+}
+@mixin onm {
+  @media screen and (max-width: $m-size) {
+    @for $i from 1 through $number {
+      .col.m#{$i} {
+        width: percentage($i/$number);
+      }
+      @content;
+    }
+  }
+}
+@mixin ons {
+    @media screen and (max-width: $s-size) {
+      @for $i from 1 through $number {
+        .col.s#{$i} {
+          width: percentage($i/$number);
+        }
+        @content;
+      }
+    }
+  }
+@each $k in map-keys($list){
+  @media screen and (max-width: map-get($list,$k)){
+    @for $i from 1 through $number{
+      .col.#{$k}#{$i}{
+        width:percentage($i/$number);
+      }
+    }
+  }
+}
+
+@mixin cube($size){
+  width: $size;
+  height: $size;
+}
+@mixin trixe($w,$h){
+  width:$w;
+  height:$h;
+}
+@mixin circle($size){
+  width: $size;
+  height:$size;
+  border-radius: 50%;
+}

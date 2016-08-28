@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" ng-app="reminder">
+<head>
+	<meta charset="UTF-8" />
+	<title>提醒计划</title>
+	<script src="js/jquery.js"></script>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-animate.js"></script>
+	<script src="js/index.js"></script>
+	<link rel="stylesheet" href="css/index.css" />
+</head>
+<body ng-controller="main" ng-click="yincang=false">
+	<div class="readner">
+		<div class="list">
+			<div class="header">
+				<span class="f1">iCloud</span>
+				<span class="f2">提醒事项</span>
+				<div class="plus" ng-click="add($index) ; save()">
+					<span></span>
+				</div>
+			</div>
+			<div class="plan">
+				<div class="clock"></div>
+				<span>已计划</span>
+			</div>
+			<ul class="lists-left">
+				<li  ng-repeat="v in database track by $index"
+					ng-click="coninner($index)"
+					>
+					<div class="licon" ng-class="v.theme"></div>
+					<input type="text" ng-model="v.listname" ng-blur="save()"/>
+				</li>
+			</ul>
+		</div>
+			
+		<div class="container" ng-init="yincang=false">
+			<div class="search">
+				<div class="sicon">
+					<span></span>
+				</div>
+				<input type="text"  placeholder="搜索所有提醒" ng-blur="save()"/>
+			</div>
+			<div class="container-inner" ng-class="inner.theme" >
+				<div class="itembox"  ng-show="yincang" ng-click="maopao($event);guan()">
+					<div class="box">
+						<input type="text" ng-model="inner.listname"  ng-blur="save()" ng-class="inner.theme" >
+						<span>列表颜色</span>
+						<ul class="colorlist" >
+							<li ng-repeat="v in colist" ng-class="{active:v===inner.theme}" class="{{v}}" ng-click="inner.theme=v">
+							<div class="coicon"></div>
+							</li>
+
+						</ul>
+						<div class="botbox">
+							<span ng-click="shanchu(inner.id);save()" >删除</span>
+							<span class="quxiao" ng-click="yincang=false;">取消</span>
+							<span>完成</span>
+						</div>
+					</div>
+				</div>
+				<div class="top" ng-class="inner.theme">
+					<h1  ng-bind="inner.listname" ></h1>
+					<div class="xuan" ng-click="yincang=!yincang;maopao($event)" >选项</div>
+				</div>
+				<ul class="yiwancheng" >
+					<div class="wanbox">
+						<span class="wanicon" ng-click="zhuan()"></span>
+						<span>已完成{{wancheng()}}项</span>
+					</div>
+
+					<li ng-repeat="v in inner.todos | filter:{isdone:true}" ng-class="{'active':v==inner}" ng-init="zhezhao=false" ng-click="zhezhao=true">
+						<div class="zhe" ng-class="inner.theme" ng-show="zhezhao" >
+							<div class="xiangq">删除</div>
+						</div>
+						<div class="wanicon" ng-click="v.isdone=!v.isdone;save()" >
+							<span></span>
+						</div>
+						<input type="text" ng-model="v.name" ng-click="change($index)" ng-blur="save();zhezhao=false">
+
+						<div class="del" ng-click="del(v.id);save()
+"></div>
+					</li>
+				</ul>
+				<hr>
+				<ul class="tiaomu">
+					<li class="tmitem" ng-repeat="v in inner.todos | filter:{isdone:false}"ng-init="zhehzao=false" ng-click="zhezhao=true">
+						<div class="zhe1"  ng-class="inner.theme" ng-show="zhezhao" >
+							<div class="xiangq">删除</div>
+						</div>
+						<div class="wanicon" ng-click="v.isdone=!v.isdone;save();"></div>
+						<input type="text"  ng-model="v.name" ng-click="change($index)" ng-blur="save();zhezhao=false">
+						<div class="del" ng-click="del(v.id)"></div>
+					</li>
+					<li class="tmlist" ng-click="newadd($index)">新条目</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
